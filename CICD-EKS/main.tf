@@ -24,6 +24,19 @@ module "vpc" {
 
 }
 
+resource "aws_security_group" "eks_sg" {
+    name = "eks-cluster-sg"
+    description = "Security group for EKS cluster"
+    vpc_id = module.vpc.vpc_id
+
+    ingress = {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.33.1"
@@ -32,8 +45,10 @@ module "eks" {
   cluster_version                = "1.31"
   cluster_endpoint_public_access = true
 
-  vpc_id     = module.vpc.default_vpc_id
+  vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
+
+  cluster_security_group_id = aws_security_group.eks_sg.id
 
   eks_managed_node_groups = {
     nodes = {
@@ -50,10 +65,12 @@ module "eks" {
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
+  name = module.eks.cluster_name
+
+  depends_on = [module.eks]
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
+  name = module.eks.cluster_name
 
 }
