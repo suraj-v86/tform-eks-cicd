@@ -1,0 +1,74 @@
+pipeline {
+    agent any 
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
+        AWS_DEFAULT_REGION = 'us-east-1'
+    }
+    stages {
+        stage('Checkout SCM'){
+            steps{
+                script{
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/suraj-v86/tform-eks-cicd.git']])
+                }
+            }
+        }
+        stage('Initializing Terraform'){
+            steps{
+                script{
+                    dir('CICD-EKS'){
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+        stage('Formating terraform code'){
+            steps{
+                script{
+                    dir('CICD-EKS'){
+                        sh 'terraform fmt'
+                    }
+                }
+            }
+        }
+        stage('Validating terraform'){
+            steps{
+                script{
+                    dir('CICD-EKS'){
+                        sh 'terraform validate'
+                    }
+                }
+            }
+        }
+        stage('Reviewing infrastructure'){
+            steps{
+                script{
+                    dir('CICD-EKS'){
+                        sh 'terraform plan'
+                    }
+                    input(message: "Do you want to proceed?", ok: "proceed")
+                }
+            }
+        }
+        stage('Creating/Destroying an EKS cluster'){
+            steps{
+                script{
+                    dir('CICD-EKS'){
+                        sh 'terraform $action --auto-approve'
+                    }
+                }
+            }
+        }
+        stage('Deploying the app'){
+            steps{
+                script{
+                    dir('CICD-EKS/configuration-files'){
+                        sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                        sh 'kubectl apply -f deployment.yml'
+                        sh 'kubectl apply -f service.yml'
+                    }
+                }
+            }
+        }
+    }
+}
