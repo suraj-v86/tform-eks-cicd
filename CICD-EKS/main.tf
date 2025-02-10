@@ -29,12 +29,36 @@ resource "aws_security_group" "eks_sg" {
     description = "Security group for EKS cluster"
     vpc_id = module.vpc.vpc_id
 
-    ingress = {
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+    ingress = [
+        {
+            from_port = 80
+            to_port = 80
+            protocol = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+        },
+        {
+            from_port = 443
+            to_port = 443
+            protocol = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+        },
+        {
+            from_port = 22
+            to_port = 22
+            protocol = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+        }
+    ]
+
+    egress = [
+        {
+            from_port = 0
+            to_port = 0
+            protocol = "-1"
+            cidr_blocks = ["0.0.0.0/0"]
+        }
+    ] 
+
 }
 
 module "eks" {
@@ -65,7 +89,7 @@ module "eks" {
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_name
+  name = module.eks.cluster_id
 
   depends_on = [module.eks]
 }
