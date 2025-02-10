@@ -25,39 +25,59 @@ module "vpc" {
 }
 
 resource "aws_security_group" "eks_sg" {
-    name = "eks-cluster-sg"
-    description = "Security group for EKS cluster"
-    vpc_id = module.vpc.vpc_id
+  name        = "eks-cluster-sg"
+  description = "Security group for EKS cluster"
+  vpc_id      = module.vpc.vpc_id
 
-    ingress = [
-        {
-            from_port = 80
-            to_port = 80
-            protocol = "tcp"
-            cidr_blocks = ["0.0.0.0/0"]
-        },
-        {
-            from_port = 443
-            to_port = 443
-            protocol = "tcp"
-            cidr_blocks = ["0.0.0.0/0"]
-        },
-        {
-            from_port = 22
-            to_port = 22
-            protocol = "tcp"
-            cidr_blocks = ["0.0.0.0/0"]
-        }
-    ]
+  ingress = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "Allow HTTP traffic"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      security_groups = []
+      self = false
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "Allow HTTPS traffic"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      security_groups = []
+      self = false
+    },
+    {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      description = "Allow SSH traffic"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      security_groups = []
+      self = false
+    }
+  ]
 
-    egress = [
-        {
-            from_port = 0
-            to_port = 0
-            protocol = "-1"
-            cidr_blocks = ["0.0.0.0/0"]
-        }
-    ] 
+  egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "Allow all outbound traffic"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      security_groups = []
+      self = false
+    }
+  ]
 
 }
 
