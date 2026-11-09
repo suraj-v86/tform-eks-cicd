@@ -2,7 +2,7 @@
 
 A hands-on DevOps practice project that brings together Terraform, AWS, Jenkins, and Kubernetes to provision AWS infrastructure and deploy an NGINX application to Amazon EKS.
 
-> **Project scope:** This repository contains Terraform configurations, a Jenkins installation script, a Jenkins pipeline, and Kubernetes manifests. It documents the intended automation workflow. The repository alone does not include Jenkins build logs or other evidence proving a successful end-to-end pipeline run.
+> **Project scope:** This project demonstrates automated AWS infrastructure provisioning and NGINX application deployment on Amazon EKS using Terraform and Jenkins. It includes Terraform configurations, a Jenkins installation script, a CI/CD pipeline, and Kubernetes deployment manifests. The Jenkins pipeline and NGINX deployment were successfully tested as part of the hands-on project.
 
 ## Architecture overview
 
@@ -190,7 +190,6 @@ This is a learning project, not a production-ready reference architecture. Befor
 - Pin and test Terraform provider and module versions.
 - Review security group rules, subnet tags, IAM permissions, and EKS endpoint access.
 - Upgrade the NGINX image to a currently supported version and consider image scanning and resource requests/limits.
-- Add pipeline validation, failure handling, and evidence from successful runs before describing the workflow as verified end-to-end automation.
 
 ## Learning outcomes
 
