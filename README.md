@@ -1,4 +1,4 @@
-# AWS EKS Provisioning and NGINX Deployment with Terraform and Jenkins
+# Automated AWS EKS Provisioning and NGINX Deployment with Terraform and Jenkins
 
 A hands-on DevOps practice project that brings together Terraform, AWS, Jenkins, and Kubernetes to provision AWS infrastructure and deploy an NGINX application to Amazon EKS.
 
