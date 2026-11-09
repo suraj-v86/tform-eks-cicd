@@ -2,7 +2,7 @@
 
 A hands-on DevOps practice project that brings together Terraform, AWS, Jenkins, and Kubernetes to provision AWS infrastructure and deploy an NGINX application to Amazon EKS.
 
-> **Project scope:** This project demonstrates automated AWS infrastructure provisioning and NGINX application deployment on Amazon EKS using Terraform and Jenkins. It includes Terraform configurations, a Jenkins installation script, a CI/CD pipeline, and Kubernetes deployment manifests. The Jenkins pipeline and NGINX deployment were successfully tested as part of the hands-on project.
+> **Project scope:** This project demonstrates automated AWS infrastructure provisioning and NGINX application deployment on Amazon EKS using Terraform and Jenkins. It includes Terraform configurations, a Jenkins installation script, a Jenkins pipeline and Kubernetes deployment manifests. I ran the pipeline end to end in 2025: it created the EKS cluster and deployed NGINX. I did not keep build logs or screenshots from that run.
 
 ## Architecture overview
 
